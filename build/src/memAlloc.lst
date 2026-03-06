@@ -1,0 +1,988 @@
+GAS LISTING /tmp/cc2PNtos.s 			page 1
+
+
+   1              		.file	"memAlloc.cpp"
+   2              		.option pic
+   3              		.option norelax
+   4              		.text
+   5              	.Ltext0:
+   6              		.align	2
+   7              		.globl	_ZN8MemAlloc11getInstanceEv
+   9              	_ZN8MemAlloc11getInstanceEv:
+  10              	.LFB0:
+  11              		.file 1 "src/memAlloc.cpp"
+   1:src/memAlloc.cpp **** //
+   2:src/memAlloc.cpp **** // Created by os on 7/23/24.
+   3:src/memAlloc.cpp **** //
+   4:src/memAlloc.cpp **** 
+   5:src/memAlloc.cpp **** #include "../h/memAlloc.h"
+   6:src/memAlloc.cpp **** 
+   7:src/memAlloc.cpp **** //1.zad 3.klk, jun 2022.god
+   8:src/memAlloc.cpp **** MemAlloc* MemAlloc::getInstance() {
+  12              		.loc 1 8 35
+  13              		.cfi_startproc
+  14 0000 130101FF 		addi	sp,sp,-16
+  15              		.cfi_def_cfa_offset 16
+  16 0004 23348100 		sd	s0,8(sp)
+  17              		.cfi_offset 8, -8
+  18 0008 13040101 		addi	s0,sp,16
+  19              		.cfi_def_cfa 8, 0
+   9:src/memAlloc.cpp ****     static MemAlloc instance;
+  20              		.loc 1 9 5
+  10:src/memAlloc.cpp ****     return &instance;
+  21              		.loc 1 10 5
+  11:src/memAlloc.cpp **** }
+  22              		.loc 1 11 1 is_stmt 0
+  23 000c 17050000 		lla	a0,.LANCHOR0
+  23      13050500 
+  24 0014 03348100 		ld	s0,8(sp)
+  25              		.cfi_restore 8
+  26              		.cfi_def_cfa 2, 16
+  27 0018 13010101 		addi	sp,sp,16
+  28              		.cfi_def_cfa_offset 0
+  29 001c 67800000 		jr	ra
+  30              		.cfi_endproc
+  31              	.LFE0:
+  33              		.align	2
+  34              		.globl	_ZN8MemAlloc9mem_allocEm
+  36              	_ZN8MemAlloc9mem_allocEm:
+  37              	.LFB1:
+  12:src/memAlloc.cpp **** 
+  13:src/memAlloc.cpp **** void* MemAlloc::mem_alloc(size_t size) {
+  38              		.loc 1 13 40 is_stmt 1
+  39              		.cfi_startproc
+  40              	.LVL0:
+  41 0020 130101FF 		addi	sp,sp,-16
+  42              		.cfi_def_cfa_offset 16
+  43 0024 23348100 		sd	s0,8(sp)
+  44              		.cfi_offset 8, -8
+  45 0028 13040101 		addi	s0,sp,16
+  46              		.cfi_def_cfa 8, 0
+GAS LISTING /tmp/cc2PNtos.s 			page 2
+
+
+  47 002c 93060500 		mv	a3,a0
+  14:src/memAlloc.cpp ****     //ako je lista prazna, init prvi slobodni blok
+  15:src/memAlloc.cpp ****     if(!head){
+  48              		.loc 1 15 5
+  49              	.LBB2:
+  50              		.loc 1 15 9 is_stmt 0
+  51 0030 83370500 		ld	a5,0(a0)
+  52              		.loc 1 15 5
+  53 0034 63820702 		beqz	a5,.L14
+  54              	.L4:
+  55              	.LBE2:
+  16:src/memAlloc.cpp ****         MemFree* firstBlock=(MemFree*)HEAP_START_ADDR;
+  17:src/memAlloc.cpp ****         firstBlock->size=((char*)HEAP_END_ADDR - (char*)HEAP_START_ADDR-sizeof(MemFree))/MEM_BLOCK_
+  18:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  19:src/memAlloc.cpp ****         head=firstBlock;
+  20:src/memAlloc.cpp ****     }
+  21:src/memAlloc.cpp **** 
+  22:src/memAlloc.cpp ****     MemFree* cur=head;
+  56              		.loc 1 22 5 is_stmt 1
+  57              		.loc 1 22 14 is_stmt 0
+  58 0038 03B50600 		ld	a0,0(a3)
+  59              	.LVL1:
+  23:src/memAlloc.cpp ****     MemFree* prev= nullptr;
+  60              		.loc 1 23 5 is_stmt 1
+  61              		.loc 1 23 14 is_stmt 0
+  62 003c 13070000 		li	a4,0
+  63              	.LVL2:
+  64              	.L6:
+  24:src/memAlloc.cpp **** 
+  25:src/memAlloc.cpp ****     while(cur && cur->size<size){
+  65              		.loc 1 25 5 is_stmt 1
+  66              		.loc 1 25 15
+  67 0040 63060504 		beqz	a0,.L5
+  68              		.loc 1 25 23 is_stmt 0 discriminator 1
+  69 0044 83370500 		ld	a5,0(a0)
+  70              		.loc 1 25 15 discriminator 1
+  71 0048 63F2B704 		bgeu	a5,a1,.L5
+  26:src/memAlloc.cpp ****         prev=cur;
+  72              		.loc 1 26 9 is_stmt 1
+  73              	.LVL3:
+  27:src/memAlloc.cpp ****         cur=cur->next;
+  74              		.loc 1 27 9
+  26:src/memAlloc.cpp ****         prev=cur;
+  75              		.loc 1 26 13 is_stmt 0
+  76 004c 13070500 		mv	a4,a0
+  77              		.loc 1 27 12
+  78 0050 03358500 		ld	a0,8(a0)
+  79              	.LVL4:
+  25:src/memAlloc.cpp ****         prev=cur;
+  80              		.loc 1 25 5
+  81 0054 6FF0DFFE 		j	.L6
+  82              	.LVL5:
+  83              	.L14:
+  84              	.LBB4:
+  85              	.LBB3:
+  16:src/memAlloc.cpp ****         firstBlock->size=((char*)HEAP_END_ADDR - (char*)HEAP_START_ADDR-sizeof(MemFree))/MEM_BLOCK_
+  86              		.loc 1 16 9 is_stmt 1
+GAS LISTING /tmp/cc2PNtos.s 			page 3
+
+
+  16:src/memAlloc.cpp ****         firstBlock->size=((char*)HEAP_END_ADDR - (char*)HEAP_START_ADDR-sizeof(MemFree))/MEM_BLOCK_
+  87              		.loc 1 16 18 is_stmt 0
+  88 0058 97070000 		la	a5,HEAP_START_ADDR
+  88      83B70700 
+  89 0060 03B70700 		ld	a4,0(a5)
+  90              	.LVL6:
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  91              		.loc 1 17 9 is_stmt 1
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  92              		.loc 1 17 27 is_stmt 0
+  93 0064 97070000 		la	a5,HEAP_END_ADDR
+  93      83B70700 
+  94 006c 83B70700 		ld	a5,0(a5)
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  95              		.loc 1 17 48
+  96 0070 B387E740 		sub	a5,a5,a4
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  97              		.loc 1 17 72
+  98 0074 938707FF 		addi	a5,a5,-16
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+  99              		.loc 1 17 89
+ 100 0078 93D76700 		srli	a5,a5,6
+  17:src/memAlloc.cpp ****         firstBlock->next= nullptr;
+ 101              		.loc 1 17 25
+ 102 007c 2330F700 		sd	a5,0(a4)
+  18:src/memAlloc.cpp ****         head=firstBlock;
+ 103              		.loc 1 18 9 is_stmt 1
+  18:src/memAlloc.cpp ****         head=firstBlock;
+ 104              		.loc 1 18 25 is_stmt 0
+ 105 0080 23340700 		sd	zero,8(a4)
+  19:src/memAlloc.cpp ****     }
+ 106              		.loc 1 19 9 is_stmt 1
+  19:src/memAlloc.cpp ****     }
+ 107              		.loc 1 19 13 is_stmt 0
+ 108 0084 2330E500 		sd	a4,0(a0)
+ 109              	.LBE3:
+ 110 0088 6FF01FFB 		j	.L4
+ 111              	.LVL7:
+ 112              	.L5:
+ 113              	.LBE4:
+  28:src/memAlloc.cpp ****     }
+  29:src/memAlloc.cpp **** 
+  30:src/memAlloc.cpp ****     if(!cur) return nullptr;
+ 114              		.loc 1 30 5 is_stmt 1
+ 115 008c 63000504 		beqz	a0,.L3
+  31:src/memAlloc.cpp **** 
+  32:src/memAlloc.cpp ****     if(cur->size==size){
+ 116              		.loc 1 32 5
+ 117              	.LBB5:
+ 118              		.loc 1 32 13 is_stmt 0
+ 119 0090 83370500 		ld	a5,0(a0)
+ 120              		.loc 1 32 5
+ 121 0094 6382B704 		beq	a5,a1,.L15
+ 122              	.LBB6:
+  33:src/memAlloc.cpp ****         MemFree* nextBlock=cur->next;
+  34:src/memAlloc.cpp ****         if(prev){
+  35:src/memAlloc.cpp ****             prev->next=nextBlock;
+GAS LISTING /tmp/cc2PNtos.s 			page 4
+
+
+  36:src/memAlloc.cpp ****         } else{
+  37:src/memAlloc.cpp ****             head=nextBlock;
+  38:src/memAlloc.cpp ****         }
+  39:src/memAlloc.cpp ****         return (void*)((char*)cur + sizeof(MemFree));
+  40:src/memAlloc.cpp ****     } else{
+  41:src/memAlloc.cpp ****         MemFree* block=(MemFree*)((char*)cur + sizeof(MemFree) + size*MEM_BLOCK_SIZE);
+ 123              		.loc 1 41 9 is_stmt 1
+ 124              		.loc 1 41 70 is_stmt 0
+ 125 0098 13966500 		slli	a2,a1,6
+ 126              		.loc 1 41 64
+ 127 009c 13060601 		addi	a2,a2,16
+ 128              		.loc 1 41 18
+ 129 00a0 3306C500 		add	a2,a0,a2
+ 130              	.LVL8:
+  42:src/memAlloc.cpp ****         block->size=(cur->size - size - sizeof(MemFree))/MEM_BLOCK_SIZE;
+ 131              		.loc 1 42 9 is_stmt 1
+ 132              		.loc 1 42 32 is_stmt 0
+ 133 00a4 B387B740 		sub	a5,a5,a1
+ 134              		.loc 1 42 39
+ 135 00a8 938707FF 		addi	a5,a5,-16
+ 136              		.loc 1 42 57
+ 137 00ac 93D76700 		srli	a5,a5,6
+ 138              		.loc 1 42 20
+ 139 00b0 2330F600 		sd	a5,0(a2)
+  43:src/memAlloc.cpp ****         cur->size=size;
+ 140              		.loc 1 43 9 is_stmt 1
+ 141              		.loc 1 43 18 is_stmt 0
+ 142 00b4 2330B500 		sd	a1,0(a0)
+  44:src/memAlloc.cpp ****         block->next=cur->next;
+ 143              		.loc 1 44 9 is_stmt 1
+ 144              		.loc 1 44 26 is_stmt 0
+ 145 00b8 83378500 		ld	a5,8(a0)
+ 146              		.loc 1 44 20
+ 147 00bc 2334F600 		sd	a5,8(a2)
+  45:src/memAlloc.cpp ****         if(prev){
+ 148              		.loc 1 45 9 is_stmt 1
+ 149 00c0 630A0702 		beqz	a4,.L11
+  46:src/memAlloc.cpp ****             prev->next=block;
+ 150              		.loc 1 46 13
+ 151              		.loc 1 46 23 is_stmt 0
+ 152 00c4 2334C700 		sd	a2,8(a4)
+ 153              	.L12:
+  47:src/memAlloc.cpp ****         } else{
+  48:src/memAlloc.cpp ****             head=block;
+  49:src/memAlloc.cpp ****         }
+  50:src/memAlloc.cpp ****         return (void*)((char*)cur + sizeof(MemFree));
+ 154              		.loc 1 50 9 is_stmt 1
+ 155              		.loc 1 50 52 is_stmt 0
+ 156 00c8 13050501 		addi	a0,a0,16
+ 157              	.LVL9:
+ 158              	.L3:
+ 159              	.LBE6:
+ 160              	.LBE5:
+  51:src/memAlloc.cpp ****     }
+  52:src/memAlloc.cpp **** }
+ 161              		.loc 1 52 1
+ 162 00cc 03348100 		ld	s0,8(sp)
+GAS LISTING /tmp/cc2PNtos.s 			page 5
+
+
+ 163              		.cfi_remember_state
+ 164              		.cfi_restore 8
+ 165              		.cfi_def_cfa 2, 16
+ 166 00d0 13010101 		addi	sp,sp,16
+ 167              		.cfi_def_cfa_offset 0
+ 168 00d4 67800000 		jr	ra
+ 169              	.LVL10:
+ 170              	.L15:
+ 171              		.cfi_restore_state
+ 172              	.LBB9:
+ 173              	.LBB7:
+  33:src/memAlloc.cpp ****         if(prev){
+ 174              		.loc 1 33 9 is_stmt 1
+  33:src/memAlloc.cpp ****         if(prev){
+ 175              		.loc 1 33 18 is_stmt 0
+ 176 00d8 83378500 		ld	a5,8(a0)
+ 177              	.LVL11:
+  34:src/memAlloc.cpp ****             prev->next=nextBlock;
+ 178              		.loc 1 34 9 is_stmt 1
+ 179 00dc 63080700 		beqz	a4,.L9
+  35:src/memAlloc.cpp ****         } else{
+ 180              		.loc 1 35 13
+  35:src/memAlloc.cpp ****         } else{
+ 181              		.loc 1 35 23 is_stmt 0
+ 182 00e0 2334F700 		sd	a5,8(a4)
+ 183              	.L10:
+  39:src/memAlloc.cpp ****     } else{
+ 184              		.loc 1 39 9 is_stmt 1
+  39:src/memAlloc.cpp ****     } else{
+ 185              		.loc 1 39 52 is_stmt 0
+ 186 00e4 13050501 		addi	a0,a0,16
+ 187              	.LVL12:
+ 188 00e8 6FF05FFE 		j	.L3
+ 189              	.LVL13:
+ 190              	.L9:
+  37:src/memAlloc.cpp ****         }
+ 191              		.loc 1 37 13 is_stmt 1
+  37:src/memAlloc.cpp ****         }
+ 192              		.loc 1 37 17 is_stmt 0
+ 193 00ec 23B0F600 		sd	a5,0(a3)
+ 194 00f0 6FF05FFF 		j	.L10
+ 195              	.LVL14:
+ 196              	.L11:
+ 197              	.LBE7:
+ 198              	.LBB8:
+  48:src/memAlloc.cpp ****         }
+ 199              		.loc 1 48 13 is_stmt 1
+  48:src/memAlloc.cpp ****         }
+ 200              		.loc 1 48 17 is_stmt 0
+ 201 00f4 23B0C600 		sd	a2,0(a3)
+ 202 00f8 6FF01FFD 		j	.L12
+ 203              	.LBE8:
+ 204              	.LBE9:
+ 205              		.cfi_endproc
+ 206              	.LFE1:
+ 208              		.align	2
+ 209              		.globl	_ZN8MemAlloc11try_to_joinEPNS_7MemFreeE
+GAS LISTING /tmp/cc2PNtos.s 			page 6
+
+
+ 211              	_ZN8MemAlloc11try_to_joinEPNS_7MemFreeE:
+ 212              	.LFB3:
+  53:src/memAlloc.cpp **** 
+  54:src/memAlloc.cpp **** int MemAlloc::mem_free(void* addr) {
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+  56:src/memAlloc.cpp ****         return -1;
+  57:src/memAlloc.cpp **** 
+  58:src/memAlloc.cpp ****     MemFree* newSeg = (MemFree*)((char*)addr - sizeof(MemFree));
+  59:src/memAlloc.cpp ****     if (newSeg->size <= 0)
+  60:src/memAlloc.cpp ****         return -2;
+  61:src/memAlloc.cpp **** 
+  62:src/memAlloc.cpp ****     MemFree* cur = nullptr;
+  63:src/memAlloc.cpp ****     MemFree* prev = nullptr;
+  64:src/memAlloc.cpp **** 
+  65:src/memAlloc.cpp ****     if (!head || addr < (char*)head) {
+  66:src/memAlloc.cpp ****         // Umetanje kao prvi element
+  67:src/memAlloc.cpp ****         newSeg->next = head;
+  68:src/memAlloc.cpp ****         head = newSeg;
+  69:src/memAlloc.cpp ****     } else {
+  70:src/memAlloc.cpp ****         // pozicija za umetanje novog segmenta
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+  72:src/memAlloc.cpp ****             prev = cur;
+  73:src/memAlloc.cpp ****         }
+  74:src/memAlloc.cpp ****         newSeg->next = cur->next;
+  75:src/memAlloc.cpp ****         cur->next = newSeg;
+  76:src/memAlloc.cpp ****     }
+  77:src/memAlloc.cpp **** 
+  78:src/memAlloc.cpp ****     try_to_join(newSeg);
+  79:src/memAlloc.cpp ****     if (prev) {
+  80:src/memAlloc.cpp ****         try_to_join(prev);
+  81:src/memAlloc.cpp ****     }
+  82:src/memAlloc.cpp **** 
+  83:src/memAlloc.cpp ****     return 0;
+  84:src/memAlloc.cpp **** }
+  85:src/memAlloc.cpp **** 
+  86:src/memAlloc.cpp **** //2.zad 2.klk, sept 2015
+  87:src/memAlloc.cpp **** void MemAlloc ::try_to_join(MemAlloc::MemFree *cur) {
+ 213              		.loc 1 87 53 is_stmt 1
+ 214              		.cfi_startproc
+ 215              	.LVL15:
+ 216 00fc 130101FF 		addi	sp,sp,-16
+ 217              		.cfi_def_cfa_offset 16
+ 218 0100 23348100 		sd	s0,8(sp)
+ 219              		.cfi_offset 8, -8
+ 220 0104 13040101 		addi	s0,sp,16
+ 221              		.cfi_def_cfa 8, 0
+  88:src/memAlloc.cpp ****     if(cur->next && (char*)cur + sizeof(MemFree) + cur->size*MEM_BLOCK_SIZE == (char*)cur->next){
+ 222              		.loc 1 88 5
+ 223              		.loc 1 88 13 is_stmt 0
+ 224 0108 03B78500 		ld	a4,8(a1)
+ 225              		.loc 1 88 5
+ 226 010c 630C0700 		beqz	a4,.L16
+ 227              		.loc 1 88 57 discriminator 1
+ 228 0110 83B60500 		ld	a3,0(a1)
+ 229              		.loc 1 88 61 discriminator 1
+ 230 0114 93976600 		slli	a5,a3,6
+ 231              		.loc 1 88 50 discriminator 1
+GAS LISTING /tmp/cc2PNtos.s 			page 7
+
+
+ 232 0118 93870701 		addi	a5,a5,16
+ 233 011c B387F500 		add	a5,a1,a5
+ 234              		.loc 1 88 18 discriminator 1
+ 235 0120 6308F700 		beq	a4,a5,.L19
+ 236              	.L16:
+  89:src/memAlloc.cpp ****         cur->size += cur->next->size;
+  90:src/memAlloc.cpp ****         cur->next = cur->next->next;
+  91:src/memAlloc.cpp ****     }
+  92:src/memAlloc.cpp **** }...
+ 237              		.loc 1 92 1
+ 238 0124 03348100 		ld	s0,8(sp)
+ 239              		.cfi_remember_state
+ 240              		.cfi_restore 8
+ 241              		.cfi_def_cfa 2, 16
+ 242 0128 13010101 		addi	sp,sp,16
+ 243              		.cfi_def_cfa_offset 0
+ 244 012c 67800000 		jr	ra
+ 245              	.L19:
+ 246              		.cfi_restore_state
+  89:src/memAlloc.cpp ****         cur->size += cur->next->size;
+ 247              		.loc 1 89 9 is_stmt 1
+  89:src/memAlloc.cpp ****         cur->size += cur->next->size;
+ 248              		.loc 1 89 33 is_stmt 0
+ 249 0130 83370700 		ld	a5,0(a4)
+  89:src/memAlloc.cpp ****         cur->size += cur->next->size;
+ 250              		.loc 1 89 19
+ 251 0134 B386F600 		add	a3,a3,a5
+ 252 0138 23B0D500 		sd	a3,0(a1)
+  90:src/memAlloc.cpp ****         cur->next = cur->next->next;
+ 253              		.loc 1 90 9 is_stmt 1
+  90:src/memAlloc.cpp ****         cur->next = cur->next->next;
+ 254              		.loc 1 90 32 is_stmt 0
+ 255 013c 83378700 		ld	a5,8(a4)
+  90:src/memAlloc.cpp ****         cur->next = cur->next->next;
+ 256              		.loc 1 90 19
+ 257 0140 23B4F500 		sd	a5,8(a1)
+ 258              		.loc 1 92 1
+ 259 0144 6FF01FFE 		j	.L16
+ 260              		.cfi_endproc
+ 261              	.LFE3:
+ 263              		.align	2
+ 264              		.globl	_ZN8MemAlloc8mem_freeEPv
+ 266              	_ZN8MemAlloc8mem_freeEPv:
+ 267              	.LFB2:
+  54:src/memAlloc.cpp **** int MemAlloc::mem_free(void* addr) {
+ 268              		.loc 1 54 36 is_stmt 1
+ 269              		.cfi_startproc
+ 270              	.LVL16:
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+ 271              		.loc 1 55 5
+ 272 0148 6386050C 		beqz	a1,.L26
+  54:src/memAlloc.cpp **** int MemAlloc::mem_free(void* addr) {
+ 273              		.loc 1 54 36 is_stmt 0 discriminator 1
+ 274 014c 130101FE 		addi	sp,sp,-32
+ 275              		.cfi_def_cfa_offset 32
+ 276 0150 233C1100 		sd	ra,24(sp)
+ 277 0154 23388100 		sd	s0,16(sp)
+GAS LISTING /tmp/cc2PNtos.s 			page 8
+
+
+ 278 0158 23349100 		sd	s1,8(sp)
+ 279 015c 23302101 		sd	s2,0(sp)
+ 280              		.cfi_offset 1, -8
+ 281              		.cfi_offset 8, -16
+ 282              		.cfi_offset 9, -24
+ 283              		.cfi_offset 18, -32
+ 284 0160 13040102 		addi	s0,sp,32
+ 285              		.cfi_def_cfa 8, 0
+ 286 0164 93040500 		mv	s1,a0
+ 287 0168 93870500 		mv	a5,a1
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+ 288              		.loc 1 55 25 discriminator 1
+ 289 016c 17070000 		la	a4,HEAP_START_ADDR
+ 289      03370700 
+ 290 0174 03370700 		ld	a4,0(a4)
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+ 291              		.loc 1 55 15 discriminator 1
+ 292 0178 63E2E50A 		bgtu	a4,a1,.L27
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+ 293              		.loc 1 55 58 discriminator 2
+ 294 017c 17070000 		la	a4,HEAP_END_ADDR
+ 294      03370700 
+ 295 0184 03370700 		ld	a4,0(a4)
+  55:src/memAlloc.cpp ****     if (!addr || addr < (char*)HEAP_START_ADDR || addr > (char*)HEAP_END_ADDR)
+ 296              		.loc 1 55 48 discriminator 2
+ 297 0188 636EB708 		bltu	a4,a1,.L28
+  58:src/memAlloc.cpp ****     MemFree* newSeg = (MemFree*)((char*)addr - sizeof(MemFree));
+ 298              		.loc 1 58 5 is_stmt 1
+  58:src/memAlloc.cpp ****     MemFree* newSeg = (MemFree*)((char*)addr - sizeof(MemFree));
+ 299              		.loc 1 58 14 is_stmt 0
+ 300 018c 938505FF 		addi	a1,a1,-16
+ 301              	.LVL17:
+  59:src/memAlloc.cpp ****     if (newSeg->size <= 0)
+ 302              		.loc 1 59 5 is_stmt 1
+  59:src/memAlloc.cpp ****     if (newSeg->size <= 0)
+ 303              		.loc 1 59 17 is_stmt 0
+ 304 0190 03B707FF 		ld	a4,-16(a5)
+  59:src/memAlloc.cpp ****     if (newSeg->size <= 0)
+ 305              		.loc 1 59 5
+ 306 0194 630C0708 		beqz	a4,.L29
+  62:src/memAlloc.cpp ****     MemFree* cur = nullptr;
+ 307              		.loc 1 62 5 is_stmt 1
+ 308              	.LVL18:
+  63:src/memAlloc.cpp ****     MemFree* prev = nullptr;
+ 309              		.loc 1 63 5
+  65:src/memAlloc.cpp ****     if (!head || addr < (char*)head) {
+ 310              		.loc 1 65 5
+  65:src/memAlloc.cpp ****     if (!head || addr < (char*)head) {
+ 311              		.loc 1 65 10 is_stmt 0
+ 312 0198 83360500 		ld	a3,0(a0)
+  65:src/memAlloc.cpp ****     if (!head || addr < (char*)head) {
+ 313              		.loc 1 65 5
+ 314 019c 63840600 		beqz	a3,.L22
+  65:src/memAlloc.cpp ****     if (!head || addr < (char*)head) {
+ 315              		.loc 1 65 15 discriminator 1
+ 316 01a0 63F6D704 		bleu	a3,a5,.L30
+ 317              	.L22:
+GAS LISTING /tmp/cc2PNtos.s 			page 9
+
+
+  67:src/memAlloc.cpp ****         newSeg->next = head;
+ 318              		.loc 1 67 9 is_stmt 1
+  67:src/memAlloc.cpp ****         newSeg->next = head;
+ 319              		.loc 1 67 22 is_stmt 0
+ 320 01a4 23BCD7FE 		sd	a3,-8(a5)
+  68:src/memAlloc.cpp ****         head = newSeg;
+ 321              		.loc 1 68 9 is_stmt 1
+  68:src/memAlloc.cpp ****         head = newSeg;
+ 322              		.loc 1 68 14 is_stmt 0
+ 323 01a8 23B0B400 		sd	a1,0(s1)
+  63:src/memAlloc.cpp ****     MemFree* prev = nullptr;
+ 324              		.loc 1 63 14
+ 325 01ac 13090000 		li	s2,0
+ 326              	.LVL19:
+ 327              	.L24:
+  78:src/memAlloc.cpp ****     try_to_join(newSeg);
+ 328              		.loc 1 78 5 is_stmt 1
+  78:src/memAlloc.cpp ****     try_to_join(newSeg);
+ 329              		.loc 1 78 16 is_stmt 0
+ 330 01b0 13850400 		mv	a0,s1
+ 331 01b4 97000000 		call	_ZN8MemAlloc11try_to_joinEPNS_7MemFreeE
+ 331      E7800000 
+ 332              	.LVL20:
+  79:src/memAlloc.cpp ****     if (prev) {
+ 333              		.loc 1 79 5 is_stmt 1
+ 334 01bc 630C0906 		beqz	s2,.L32
+  80:src/memAlloc.cpp ****         try_to_join(prev);
+ 335              		.loc 1 80 9
+  80:src/memAlloc.cpp ****         try_to_join(prev);
+ 336              		.loc 1 80 20 is_stmt 0
+ 337 01c0 93050900 		mv	a1,s2
+ 338 01c4 13850400 		mv	a0,s1
+ 339 01c8 97000000 		call	_ZN8MemAlloc11try_to_joinEPNS_7MemFreeE
+ 339      E7800000 
+ 340              	.LVL21:
+  83:src/memAlloc.cpp ****     return 0;
+ 341              		.loc 1 83 12
+ 342 01d0 13050000 		li	a0,0
+ 343              	.LVL22:
+ 344              	.L21:
+  84:src/memAlloc.cpp **** }
+ 345              		.loc 1 84 1
+ 346 01d4 83308101 		ld	ra,24(sp)
+ 347              		.cfi_remember_state
+ 348              		.cfi_restore 1
+ 349 01d8 03340101 		ld	s0,16(sp)
+ 350              		.cfi_restore 8
+ 351              		.cfi_def_cfa 2, 32
+ 352 01dc 83348100 		ld	s1,8(sp)
+ 353              		.cfi_restore 9
+ 354              	.LVL23:
+ 355 01e0 03390100 		ld	s2,0(sp)
+ 356              		.cfi_restore 18
+ 357 01e4 13010102 		addi	sp,sp,32
+ 358              		.cfi_def_cfa_offset 0
+ 359 01e8 67800000 		jr	ra
+ 360              	.LVL24:
+GAS LISTING /tmp/cc2PNtos.s 			page 10
+
+
+ 361              	.L30:
+ 362              		.cfi_restore_state
+  63:src/memAlloc.cpp ****     MemFree* prev = nullptr;
+ 363              		.loc 1 63 14
+ 364 01ec 13090000 		li	s2,0
+ 365 01f0 6F00C000 		j	.L23
+ 366              	.LVL25:
+ 367              	.L31:
+  72:src/memAlloc.cpp ****             prev = cur;
+ 368              		.loc 1 72 18
+ 369 01f4 13890600 		mv	s2,a3
+ 370              	.LVL26:
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+ 371              		.loc 1 71 81
+ 372 01f8 93060700 		mv	a3,a4
+ 373              	.LVL27:
+ 374              	.L23:
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+ 375              		.loc 1 71 47 is_stmt 1 discriminator 4
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+ 376              		.loc 1 71 31 is_stmt 0 discriminator 4
+ 377 01fc 03B78600 		ld	a4,8(a3)
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+ 378              		.loc 1 71 47 discriminator 4
+ 379 0200 63040700 		beqz	a4,.L25
+  71:src/memAlloc.cpp ****         for (cur = head; cur->next != nullptr && addr > (char*)(cur->next); cur = cur->next) {
+ 380              		.loc 1 71 47 discriminator 2
+ 381 0204 E368F7FE 		bltu	a4,a5,.L31
+ 382              	.L25:
+  74:src/memAlloc.cpp ****         newSeg->next = cur->next;
+ 383              		.loc 1 74 9 is_stmt 1
+  74:src/memAlloc.cpp ****         newSeg->next = cur->next;
+ 384              		.loc 1 74 22 is_stmt 0
+ 385 0208 23BCE7FE 		sd	a4,-8(a5)
+  75:src/memAlloc.cpp ****         cur->next = newSeg;
+ 386              		.loc 1 75 9 is_stmt 1
+  75:src/memAlloc.cpp ****         cur->next = newSeg;
+ 387              		.loc 1 75 19 is_stmt 0
+ 388 020c 23B4B600 		sd	a1,8(a3)
+ 389 0210 6FF01FFA 		j	.L24
+ 390              	.LVL28:
+ 391              	.L26:
+ 392              		.cfi_def_cfa_register 2
+ 393              		.cfi_restore 1
+ 394              		.cfi_restore 8
+ 395              		.cfi_restore 9
+ 396              		.cfi_restore 18
+  56:src/memAlloc.cpp ****         return -1;
+ 397              		.loc 1 56 17
+ 398 0214 1305F0FF 		li	a0,-1
+ 399              	.LVL29:
+  84:src/memAlloc.cpp **** }
+ 400              		.loc 1 84 1
+ 401 0218 67800000 		ret
+ 402              	.LVL30:
+ 403              	.L27:
+ 404              		.cfi_def_cfa_register 8
+GAS LISTING /tmp/cc2PNtos.s 			page 11
+
+
+ 405              		.cfi_offset 1, -8
+ 406              		.cfi_offset 8, -16
+ 407              		.cfi_offset 9, -24
+ 408              		.cfi_offset 18, -32
+  56:src/memAlloc.cpp ****         return -1;
+ 409              		.loc 1 56 17
+ 410 021c 1305F0FF 		li	a0,-1
+ 411 0220 6FF05FFB 		j	.L21
+ 412              	.L28:
+ 413 0224 1305F0FF 		li	a0,-1
+ 414 0228 6FF0DFFA 		j	.L21
+ 415              	.LVL31:
+ 416              	.L29:
+  60:src/memAlloc.cpp ****         return -2;
+ 417              		.loc 1 60 17
+ 418 022c 1305E0FF 		li	a0,-2
+ 419 0230 6FF05FFA 		j	.L21
+ 420              	.LVL32:
+ 421              	.L32:
+  83:src/memAlloc.cpp ****     return 0;
+ 422              		.loc 1 83 12
+ 423 0234 13050000 		li	a0,0
+ 424 0238 6FF0DFF9 		j	.L21
+ 425              		.cfi_endproc
+ 426              	.LFE2:
+ 428              		.bss
+ 429              		.align	3
+ 430              		.set	.LANCHOR0,. + 0
+ 433              	_ZZN8MemAlloc11getInstanceEvE8instance:
+ 434 0000 00000000 		.zero	8
+ 434      00000000 
+ 435              		.text
+ 436              	.Letext0:
+ 437              		.file 2 "src/../h/../lib/hw.h"
+ 438              		.file 3 "src/../h/memAlloc.h"
+GAS LISTING /tmp/cc2PNtos.s 			page 12
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 memAlloc.cpp
+     /tmp/cc2PNtos.s:9      .text:0000000000000000 _ZN8MemAlloc11getInstanceEv
+     /tmp/cc2PNtos.s:13     .text:0000000000000000 .L0 
+     /tmp/cc2PNtos.s:14     .text:0000000000000000 .L0 
+     /tmp/cc2PNtos.s:15     .text:0000000000000004 .L0 
+     /tmp/cc2PNtos.s:17     .text:0000000000000008 .L0 
+     /tmp/cc2PNtos.s:19     .text:000000000000000c .L0 
+     /tmp/cc2PNtos.s:21     .text:000000000000000c .L0 
+     /tmp/cc2PNtos.s:22     .text:000000000000000c .L0 
+     /tmp/cc2PNtos.s:23     .text:000000000000000c .L0 
+     /tmp/cc2PNtos.s:25     .text:0000000000000018 .L0 
+     /tmp/cc2PNtos.s:26     .text:0000000000000018 .L0 
+     /tmp/cc2PNtos.s:28     .text:000000000000001c .L0 
+     /tmp/cc2PNtos.s:30     .text:0000000000000020 .L0 
+     /tmp/cc2PNtos.s:36     .text:0000000000000020 _ZN8MemAlloc9mem_allocEm
+     /tmp/cc2PNtos.s:39     .text:0000000000000020 .L0 
+     /tmp/cc2PNtos.s:41     .text:0000000000000020 .L0 
+     /tmp/cc2PNtos.s:42     .text:0000000000000024 .L0 
+     /tmp/cc2PNtos.s:44     .text:0000000000000028 .L0 
+     /tmp/cc2PNtos.s:46     .text:000000000000002c .L0 
+     /tmp/cc2PNtos.s:50     .text:0000000000000030 .L0 
+     /tmp/cc2PNtos.s:51     .text:0000000000000030 .L0 
+     /tmp/cc2PNtos.s:53     .text:0000000000000034 .L0 
+     /tmp/cc2PNtos.s:57     .text:0000000000000038 .L0 
+     /tmp/cc2PNtos.s:58     .text:0000000000000038 .L0 
+     /tmp/cc2PNtos.s:61     .text:000000000000003c .L0 
+     /tmp/cc2PNtos.s:62     .text:000000000000003c .L0 
+     /tmp/cc2PNtos.s:66     .text:0000000000000040 .L0 
+     /tmp/cc2PNtos.s:67     .text:0000000000000040 .L0 
+     /tmp/cc2PNtos.s:69     .text:0000000000000044 .L0 
+     /tmp/cc2PNtos.s:71     .text:0000000000000048 .L0 
+     /tmp/cc2PNtos.s:74     .text:000000000000004c .L0 
+     /tmp/cc2PNtos.s:75     .text:000000000000004c .L0 
+     /tmp/cc2PNtos.s:76     .text:000000000000004c .L0 
+     /tmp/cc2PNtos.s:78     .text:0000000000000050 .L0 
+     /tmp/cc2PNtos.s:81     .text:0000000000000054 .L0 
+     /tmp/cc2PNtos.s:87     .text:0000000000000058 .L0 
+     /tmp/cc2PNtos.s:88     .text:0000000000000058 .L0 
+     /tmp/cc2PNtos.s:92     .text:0000000000000064 .L0 
+     /tmp/cc2PNtos.s:93     .text:0000000000000064 .L0 
+     /tmp/cc2PNtos.s:96     .text:0000000000000070 .L0 
+     /tmp/cc2PNtos.s:98     .text:0000000000000074 .L0 
+     /tmp/cc2PNtos.s:100    .text:0000000000000078 .L0 
+     /tmp/cc2PNtos.s:102    .text:000000000000007c .L0 
+     /tmp/cc2PNtos.s:104    .text:0000000000000080 .L0 
+     /tmp/cc2PNtos.s:105    .text:0000000000000080 .L0 
+     /tmp/cc2PNtos.s:107    .text:0000000000000084 .L0 
+     /tmp/cc2PNtos.s:108    .text:0000000000000084 .L0 
+     /tmp/cc2PNtos.s:115    .text:000000000000008c .L0 
+     /tmp/cc2PNtos.s:118    .text:0000000000000090 .L0 
+     /tmp/cc2PNtos.s:119    .text:0000000000000090 .L0 
+     /tmp/cc2PNtos.s:121    .text:0000000000000094 .L0 
+     /tmp/cc2PNtos.s:124    .text:0000000000000098 .L0 
+     /tmp/cc2PNtos.s:125    .text:0000000000000098 .L0 
+     /tmp/cc2PNtos.s:127    .text:000000000000009c .L0 
+     /tmp/cc2PNtos.s:129    .text:00000000000000a0 .L0 
+GAS LISTING /tmp/cc2PNtos.s 			page 13
+
+
+     /tmp/cc2PNtos.s:132    .text:00000000000000a4 .L0 
+     /tmp/cc2PNtos.s:133    .text:00000000000000a4 .L0 
+     /tmp/cc2PNtos.s:135    .text:00000000000000a8 .L0 
+     /tmp/cc2PNtos.s:137    .text:00000000000000ac .L0 
+     /tmp/cc2PNtos.s:139    .text:00000000000000b0 .L0 
+     /tmp/cc2PNtos.s:141    .text:00000000000000b4 .L0 
+     /tmp/cc2PNtos.s:142    .text:00000000000000b4 .L0 
+     /tmp/cc2PNtos.s:144    .text:00000000000000b8 .L0 
+     /tmp/cc2PNtos.s:145    .text:00000000000000b8 .L0 
+     /tmp/cc2PNtos.s:147    .text:00000000000000bc .L0 
+     /tmp/cc2PNtos.s:149    .text:00000000000000c0 .L0 
+     /tmp/cc2PNtos.s:151    .text:00000000000000c4 .L0 
+     /tmp/cc2PNtos.s:152    .text:00000000000000c4 .L0 
+     /tmp/cc2PNtos.s:155    .text:00000000000000c8 .L0 
+     /tmp/cc2PNtos.s:156    .text:00000000000000c8 .L0 
+     /tmp/cc2PNtos.s:162    .text:00000000000000cc .L0 
+     /tmp/cc2PNtos.s:163    .text:00000000000000d0 .L0 
+     /tmp/cc2PNtos.s:164    .text:00000000000000d0 .L0 
+     /tmp/cc2PNtos.s:165    .text:00000000000000d0 .L0 
+     /tmp/cc2PNtos.s:167    .text:00000000000000d4 .L0 
+     /tmp/cc2PNtos.s:171    .text:00000000000000d8 .L0 
+     /tmp/cc2PNtos.s:175    .text:00000000000000d8 .L0 
+     /tmp/cc2PNtos.s:176    .text:00000000000000d8 .L0 
+     /tmp/cc2PNtos.s:179    .text:00000000000000dc .L0 
+     /tmp/cc2PNtos.s:181    .text:00000000000000e0 .L0 
+     /tmp/cc2PNtos.s:182    .text:00000000000000e0 .L0 
+     /tmp/cc2PNtos.s:185    .text:00000000000000e4 .L0 
+     /tmp/cc2PNtos.s:186    .text:00000000000000e4 .L0 
+     /tmp/cc2PNtos.s:192    .text:00000000000000ec .L0 
+     /tmp/cc2PNtos.s:193    .text:00000000000000ec .L0 
+     /tmp/cc2PNtos.s:200    .text:00000000000000f4 .L0 
+     /tmp/cc2PNtos.s:201    .text:00000000000000f4 .L0 
+     /tmp/cc2PNtos.s:205    .text:00000000000000fc .L0 
+     /tmp/cc2PNtos.s:211    .text:00000000000000fc _ZN8MemAlloc11try_to_joinEPNS_7MemFreeE
+     /tmp/cc2PNtos.s:214    .text:00000000000000fc .L0 
+     /tmp/cc2PNtos.s:216    .text:00000000000000fc .L0 
+     /tmp/cc2PNtos.s:217    .text:0000000000000100 .L0 
+     /tmp/cc2PNtos.s:219    .text:0000000000000104 .L0 
+     /tmp/cc2PNtos.s:221    .text:0000000000000108 .L0 
+     /tmp/cc2PNtos.s:223    .text:0000000000000108 .L0 
+     /tmp/cc2PNtos.s:224    .text:0000000000000108 .L0 
+     /tmp/cc2PNtos.s:226    .text:000000000000010c .L0 
+     /tmp/cc2PNtos.s:228    .text:0000000000000110 .L0 
+     /tmp/cc2PNtos.s:230    .text:0000000000000114 .L0 
+     /tmp/cc2PNtos.s:232    .text:0000000000000118 .L0 
+     /tmp/cc2PNtos.s:235    .text:0000000000000120 .L0 
+     /tmp/cc2PNtos.s:238    .text:0000000000000124 .L0 
+     /tmp/cc2PNtos.s:239    .text:0000000000000128 .L0 
+     /tmp/cc2PNtos.s:240    .text:0000000000000128 .L0 
+     /tmp/cc2PNtos.s:241    .text:0000000000000128 .L0 
+     /tmp/cc2PNtos.s:243    .text:000000000000012c .L0 
+     /tmp/cc2PNtos.s:246    .text:0000000000000130 .L0 
+     /tmp/cc2PNtos.s:248    .text:0000000000000130 .L0 
+     /tmp/cc2PNtos.s:249    .text:0000000000000130 .L0 
+     /tmp/cc2PNtos.s:251    .text:0000000000000134 .L0 
+     /tmp/cc2PNtos.s:254    .text:000000000000013c .L0 
+     /tmp/cc2PNtos.s:255    .text:000000000000013c .L0 
+GAS LISTING /tmp/cc2PNtos.s 			page 14
+
+
+     /tmp/cc2PNtos.s:257    .text:0000000000000140 .L0 
+     /tmp/cc2PNtos.s:259    .text:0000000000000144 .L0 
+     /tmp/cc2PNtos.s:260    .text:0000000000000148 .L0 
+     /tmp/cc2PNtos.s:266    .text:0000000000000148 _ZN8MemAlloc8mem_freeEPv
+     /tmp/cc2PNtos.s:269    .text:0000000000000148 .L0 
+     /tmp/cc2PNtos.s:271    .text:0000000000000148 .L0 
+     /tmp/cc2PNtos.s:272    .text:0000000000000148 .L0 
+     /tmp/cc2PNtos.s:274    .text:000000000000014c .L0 
+     /tmp/cc2PNtos.s:275    .text:0000000000000150 .L0 
+     /tmp/cc2PNtos.s:280    .text:0000000000000160 .L0 
+     /tmp/cc2PNtos.s:281    .text:0000000000000160 .L0 
+     /tmp/cc2PNtos.s:282    .text:0000000000000160 .L0 
+     /tmp/cc2PNtos.s:283    .text:0000000000000160 .L0 
+     /tmp/cc2PNtos.s:285    .text:0000000000000164 .L0 
+     /tmp/cc2PNtos.s:289    .text:000000000000016c .L0 
+     /tmp/cc2PNtos.s:292    .text:0000000000000178 .L0 
+     /tmp/cc2PNtos.s:294    .text:000000000000017c .L0 
+     /tmp/cc2PNtos.s:297    .text:0000000000000188 .L0 
+     /tmp/cc2PNtos.s:299    .text:000000000000018c .L0 
+     /tmp/cc2PNtos.s:300    .text:000000000000018c .L0 
+     /tmp/cc2PNtos.s:303    .text:0000000000000190 .L0 
+     /tmp/cc2PNtos.s:304    .text:0000000000000190 .L0 
+     /tmp/cc2PNtos.s:306    .text:0000000000000194 .L0 
+     /tmp/cc2PNtos.s:309    .text:0000000000000198 .L0 
+     /tmp/cc2PNtos.s:310    .text:0000000000000198 .L0 
+     /tmp/cc2PNtos.s:311    .text:0000000000000198 .L0 
+     /tmp/cc2PNtos.s:312    .text:0000000000000198 .L0 
+     /tmp/cc2PNtos.s:314    .text:000000000000019c .L0 
+     /tmp/cc2PNtos.s:316    .text:00000000000001a0 .L0 
+     /tmp/cc2PNtos.s:319    .text:00000000000001a4 .L0 
+     /tmp/cc2PNtos.s:320    .text:00000000000001a4 .L0 
+     /tmp/cc2PNtos.s:322    .text:00000000000001a8 .L0 
+     /tmp/cc2PNtos.s:323    .text:00000000000001a8 .L0 
+     /tmp/cc2PNtos.s:325    .text:00000000000001ac .L0 
+     /tmp/cc2PNtos.s:329    .text:00000000000001b0 .L0 
+     /tmp/cc2PNtos.s:330    .text:00000000000001b0 .L0 
+     /tmp/cc2PNtos.s:334    .text:00000000000001bc .L0 
+     /tmp/cc2PNtos.s:336    .text:00000000000001c0 .L0 
+     /tmp/cc2PNtos.s:337    .text:00000000000001c0 .L0 
+     /tmp/cc2PNtos.s:342    .text:00000000000001d0 .L0 
+     /tmp/cc2PNtos.s:346    .text:00000000000001d4 .L0 
+     /tmp/cc2PNtos.s:347    .text:00000000000001d8 .L0 
+     /tmp/cc2PNtos.s:348    .text:00000000000001d8 .L0 
+     /tmp/cc2PNtos.s:350    .text:00000000000001dc .L0 
+     /tmp/cc2PNtos.s:351    .text:00000000000001dc .L0 
+     /tmp/cc2PNtos.s:353    .text:00000000000001e0 .L0 
+     /tmp/cc2PNtos.s:356    .text:00000000000001e4 .L0 
+     /tmp/cc2PNtos.s:358    .text:00000000000001e8 .L0 
+     /tmp/cc2PNtos.s:362    .text:00000000000001ec .L0 
+     /tmp/cc2PNtos.s:364    .text:00000000000001ec .L0 
+     /tmp/cc2PNtos.s:369    .text:00000000000001f4 .L0 
+     /tmp/cc2PNtos.s:372    .text:00000000000001f8 .L0 
+     /tmp/cc2PNtos.s:376    .text:00000000000001fc .L0 
+     /tmp/cc2PNtos.s:377    .text:00000000000001fc .L0 
+     /tmp/cc2PNtos.s:379    .text:0000000000000200 .L0 
+     /tmp/cc2PNtos.s:381    .text:0000000000000204 .L0 
+     /tmp/cc2PNtos.s:384    .text:0000000000000208 .L0 
+GAS LISTING /tmp/cc2PNtos.s 			page 15
+
+
+     /tmp/cc2PNtos.s:385    .text:0000000000000208 .L0 
+     /tmp/cc2PNtos.s:387    .text:000000000000020c .L0 
+     /tmp/cc2PNtos.s:388    .text:000000000000020c .L0 
+     /tmp/cc2PNtos.s:392    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:393    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:394    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:395    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:396    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:398    .text:0000000000000214 .L0 
+     /tmp/cc2PNtos.s:401    .text:0000000000000218 .L0 
+     /tmp/cc2PNtos.s:404    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:405    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:406    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:407    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:408    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:410    .text:000000000000021c .L0 
+     /tmp/cc2PNtos.s:418    .text:000000000000022c .L0 
+     /tmp/cc2PNtos.s:423    .text:0000000000000234 .L0 
+     /tmp/cc2PNtos.s:425    .text:000000000000023c .L0 
+     /tmp/cc2PNtos.s:430    .bss:0000000000000000 .LANCHOR0
+     /tmp/cc2PNtos.s:433    .bss:0000000000000000 _ZZN8MemAlloc11getInstanceEvE8instance
+     /tmp/cc2PNtos.s:439    .text:000000000000023c .L0 
+     /tmp/cc2PNtos.s:23     .text:000000000000000c .L0 
+     /tmp/cc2PNtos.s:88     .text:0000000000000058 .L0 
+     /tmp/cc2PNtos.s:93     .text:0000000000000064 .L0 
+     /tmp/cc2PNtos.s:289    .text:000000000000016c .L0 
+     /tmp/cc2PNtos.s:294    .text:000000000000017c .L0 
+     /tmp/cc2PNtos.s:83     .text:0000000000000058 .L14
+     /tmp/cc2PNtos.s:112    .text:000000000000008c .L5
+     /tmp/cc2PNtos.s:64     .text:0000000000000040 .L6
+     /tmp/cc2PNtos.s:54     .text:0000000000000038 .L4
+     /tmp/cc2PNtos.s:158    .text:00000000000000cc .L3
+     /tmp/cc2PNtos.s:170    .text:00000000000000d8 .L15
+     /tmp/cc2PNtos.s:196    .text:00000000000000f4 .L11
+     /tmp/cc2PNtos.s:190    .text:00000000000000ec .L9
+     /tmp/cc2PNtos.s:183    .text:00000000000000e4 .L10
+     /tmp/cc2PNtos.s:153    .text:00000000000000c8 .L12
+     /tmp/cc2PNtos.s:236    .text:0000000000000124 .L16
+     /tmp/cc2PNtos.s:245    .text:0000000000000130 .L19
+     /tmp/cc2PNtos.s:391    .text:0000000000000214 .L26
+     /tmp/cc2PNtos.s:403    .text:000000000000021c .L27
+     /tmp/cc2PNtos.s:412    .text:0000000000000224 .L28
+     /tmp/cc2PNtos.s:416    .text:000000000000022c .L29
+     /tmp/cc2PNtos.s:317    .text:00000000000001a4 .L22
+     /tmp/cc2PNtos.s:361    .text:00000000000001ec .L30
+     /tmp/cc2PNtos.s:421    .text:0000000000000234 .L32
+     /tmp/cc2PNtos.s:374    .text:00000000000001fc .L23
+     /tmp/cc2PNtos.s:382    .text:0000000000000208 .L25
+     /tmp/cc2PNtos.s:367    .text:00000000000001f4 .L31
+     /tmp/cc2PNtos.s:327    .text:00000000000001b0 .L24
+     /tmp/cc2PNtos.s:344    .text:00000000000001d4 .L21
+     /tmp/cc2PNtos.s:852    .debug_abbrev:0000000000000000 .Ldebug_abbrev0
+     /tmp/cc2PNtos.s:1695   .debug_str:00000000000000f2 .LASF32
+     /tmp/cc2PNtos.s:1733   .debug_str:00000000000002da .LASF33
+     /tmp/cc2PNtos.s:1725   .debug_str:0000000000000280 .LASF34
+     /tmp/cc2PNtos.s:5      .text:0000000000000000 .Ltext0
+     /tmp/cc2PNtos.s:436    .text:000000000000023c .Letext0
+GAS LISTING /tmp/cc2PNtos.s 			page 16
+
+
+     /tmp/cc2PNtos.s:1655   .debug_line:0000000000000000 .Ldebug_line0
+     /tmp/cc2PNtos.s:1699   .debug_str:00000000000001bb .LASF0
+     /tmp/cc2PNtos.s:1689   .debug_str:00000000000000c7 .LASF1
+     /tmp/cc2PNtos.s:1681   .debug_str:0000000000000089 .LASF2
+     /tmp/cc2PNtos.s:1669   .debug_str:000000000000003f .LASF4
+     /tmp/cc2PNtos.s:1687   .debug_str:00000000000000b5 .LASF3
+     /tmp/cc2PNtos.s:1661   .debug_str:000000000000001b .LASF5
+     /tmp/cc2PNtos.s:1657   .debug_str:0000000000000000 .LASF6
+     /tmp/cc2PNtos.s:1675   .debug_str:0000000000000061 .LASF7
+     /tmp/cc2PNtos.s:1705   .debug_str:00000000000001d4 .LASF8
+     /tmp/cc2PNtos.s:1667   .debug_str:0000000000000031 .LASF9
+     /tmp/cc2PNtos.s:1737   .debug_str:00000000000002f0 .LASF10
+     /tmp/cc2PNtos.s:1679   .debug_str:000000000000007a .LASF11
+     /tmp/cc2PNtos.s:1727   .debug_str:00000000000002a7 .LASF12
+     /tmp/cc2PNtos.s:1711   .debug_str:0000000000000206 .LASF13
+     /tmp/cc2PNtos.s:1691   .debug_str:00000000000000da .LASF14
+     /tmp/cc2PNtos.s:1671   .debug_str:0000000000000046 .LASF15
+     /tmp/cc2PNtos.s:1707   .debug_str:00000000000001e4 .LASF16
+     /tmp/cc2PNtos.s:1715   .debug_str:000000000000021f .LASF35
+     /tmp/cc2PNtos.s:1659   .debug_str:0000000000000013 .LASF36
+     /tmp/cc2PNtos.s:1701   .debug_str:00000000000001c8 .LASF17
+     /tmp/cc2PNtos.s:1663   .debug_str:0000000000000022 .LASF18
+     /tmp/cc2PNtos.s:1731   .debug_str:00000000000002d0 .LASF19
+     /tmp/cc2PNtos.s:1685   .debug_str:000000000000009c .LASF21
+     /tmp/cc2PNtos.s:1713   .debug_str:0000000000000216 .LASF20
+     /tmp/cc2PNtos.s:1729   .debug_str:00000000000002b7 .LASF22
+     /tmp/cc2PNtos.s:1709   .debug_str:00000000000001fa .LASF37
+     /tmp/cc2PNtos.s:1721   .debug_str:0000000000000259 .LASF38
+     /tmp/cc2PNtos.s:1697   .debug_str:00000000000001b6 .LASF23
+     /tmp/cc2PNtos.s:1693   .debug_str:00000000000000e6 .LASF39
+     /tmp/cc2PNtos.s:1719   .debug_str:0000000000000231 .LASF40
+     /tmp/cc2PNtos.s:212    .text:00000000000000fc .LFB3
+     /tmp/cc2PNtos.s:261    .text:0000000000000148 .LFE3
+     /tmp/cc2PNtos.s:1683   .debug_str:0000000000000097 .LASF24
+     /tmp/cc2PNtos.s:267    .text:0000000000000148 .LFB2
+     /tmp/cc2PNtos.s:426    .text:000000000000023c .LFE2
+     /tmp/cc2PNtos.s:1379   .debug_loc:0000000000000000 .LLST6
+     /tmp/cc2PNtos.s:1673   .debug_str:000000000000005c .LASF25
+     /tmp/cc2PNtos.s:1416   .debug_loc:000000000000009b .LLST7
+     /tmp/cc2PNtos.s:1703   .debug_str:00000000000001cd .LASF26
+     /tmp/cc2PNtos.s:1453   .debug_loc:0000000000000136 .LLST8
+     /tmp/cc2PNtos.s:1486   .debug_loc:00000000000001af .LLST9
+     /tmp/cc2PNtos.s:1735   .debug_str:00000000000002eb .LASF27
+     /tmp/cc2PNtos.s:1503   .debug_loc:00000000000001fa .LLST10
+     /tmp/cc2PNtos.s:332    .text:00000000000001bc .LVL20
+     /tmp/cc2PNtos.s:340    .text:00000000000001d0 .LVL21
+     /tmp/cc2PNtos.s:37     .text:0000000000000020 .LFB1
+     /tmp/cc2PNtos.s:206    .text:00000000000000fc .LFE1
+     /tmp/cc2PNtos.s:1532   .debug_loc:000000000000027e .LLST0
+     /tmp/cc2PNtos.s:1551   .debug_loc:00000000000002da .LLST1
+     /tmp/cc2PNtos.s:1585   .debug_loc:0000000000000372 .LLST2
+     /tmp/cc2PNtos.s:85     .text:0000000000000058 .LBB3
+     /tmp/cc2PNtos.s:109    .text:0000000000000088 .LBE3
+     /tmp/cc2PNtos.s:1723   .debug_str:0000000000000275 .LASF28
+     /tmp/cc2PNtos.s:1609   .debug_loc:00000000000003e2 .LLST3
+     /tmp/cc2PNtos.s:173    .text:00000000000000d8 .LBB7
+     /tmp/cc2PNtos.s:197    .text:00000000000000f4 .LBE7
+GAS LISTING /tmp/cc2PNtos.s 			page 17
+
+
+     /tmp/cc2PNtos.s:1665   .debug_str:0000000000000027 .LASF29
+     /tmp/cc2PNtos.s:1616   .debug_loc:0000000000000405 .LLST5
+     /tmp/cc2PNtos.s:1647   .debug_ranges:0000000000000000 .Ldebug_ranges0
+     /tmp/cc2PNtos.s:1677   .debug_str:0000000000000074 .LASF30
+     /tmp/cc2PNtos.s:1623   .debug_loc:0000000000000428 .LLST4
+     /tmp/cc2PNtos.s:10     .text:0000000000000000 .LFB0
+     /tmp/cc2PNtos.s:31     .text:0000000000000020 .LFE0
+     /tmp/cc2PNtos.s:1717   .debug_str:0000000000000228 .LASF31
+     /tmp/cc2PNtos.s:270    .text:0000000000000148 .LVL16
+     /tmp/cc2PNtos.s:326    .text:00000000000001b0 .LVL19
+     /tmp/cc2PNtos.s:354    .text:00000000000001e0 .LVL23
+     /tmp/cc2PNtos.s:360    .text:00000000000001ec .LVL24
+     /tmp/cc2PNtos.s:390    .text:0000000000000214 .LVL28
+     /tmp/cc2PNtos.s:399    .text:0000000000000218 .LVL29
+     /tmp/cc2PNtos.s:402    .text:000000000000021c .LVL30
+     /tmp/cc2PNtos.s:301    .text:0000000000000190 .LVL17
+     /tmp/cc2PNtos.s:415    .text:000000000000022c .LVL31
+     /tmp/cc2PNtos.s:420    .text:0000000000000234 .LVL32
+     /tmp/cc2PNtos.s:343    .text:00000000000001d4 .LVL22
+     /tmp/cc2PNtos.s:308    .text:0000000000000198 .LVL18
+     /tmp/cc2PNtos.s:366    .text:00000000000001f4 .LVL25
+     /tmp/cc2PNtos.s:370    .text:00000000000001f8 .LVL26
+     /tmp/cc2PNtos.s:373    .text:00000000000001fc .LVL27
+     /tmp/cc2PNtos.s:40     .text:0000000000000020 .LVL0
+     /tmp/cc2PNtos.s:59     .text:000000000000003c .LVL1
+     /tmp/cc2PNtos.s:82     .text:0000000000000058 .LVL5
+     /tmp/cc2PNtos.s:111    .text:000000000000008c .LVL7
+     /tmp/cc2PNtos.s:73     .text:000000000000004c .LVL3
+     /tmp/cc2PNtos.s:79     .text:0000000000000054 .LVL4
+     /tmp/cc2PNtos.s:157    .text:00000000000000cc .LVL9
+     /tmp/cc2PNtos.s:169    .text:00000000000000d8 .LVL10
+     /tmp/cc2PNtos.s:187    .text:00000000000000e8 .LVL12
+     /tmp/cc2PNtos.s:189    .text:00000000000000ec .LVL13
+     /tmp/cc2PNtos.s:63     .text:0000000000000040 .LVL2
+     /tmp/cc2PNtos.s:90     .text:0000000000000064 .LVL6
+     /tmp/cc2PNtos.s:177    .text:00000000000000dc .LVL11
+     /tmp/cc2PNtos.s:195    .text:00000000000000f4 .LVL14
+     /tmp/cc2PNtos.s:130    .text:00000000000000a4 .LVL8
+     /tmp/cc2PNtos.s:440    .debug_info:0000000000000000 .Ldebug_info0
+     /tmp/cc2PNtos.s:122    .text:0000000000000098 .LBB6
+     /tmp/cc2PNtos.s:159    .text:00000000000000cc .LBE6
+     /tmp/cc2PNtos.s:198    .text:00000000000000f4 .LBB8
+     /tmp/cc2PNtos.s:203    .text:00000000000000fc .LBE8
+
+UNDEFINED SYMBOLS
+HEAP_START_ADDR
+HEAP_END_ADDR
